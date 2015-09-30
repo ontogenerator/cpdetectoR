@@ -4,6 +4,8 @@ Title: Change point estimation from sequences of choices
 Version: 0.1.0.9000
 Date: 2015-09-25
 Authors@R: person("Vladislav", "Nachev", email = "vladislav.nachev@gmail.com", role = c("aut", "cre"))
+URL: http://github.com/ontogenerator/cpdetectorr
+BugReports: http://github.com/ontogenerator/cpdetectorr/issues
 Description: An R implementation of the learning curve analysis method published in Gallistel et al. (2004).
   From a sequence of responses the changes in response (e.g. from one response frequency to another or from
 	one response level to another) are estimated using different statistical tests and a threshold criterion.

@@ -1,0 +1,18 @@
+Package: cpdetectorr
+Type: Package
+Title: Change point estimation from sequences of choices
+Version: 0.1.0.9000
+Date: 2015-09-25
+Authors@R: person("Vladislav", "Nachev", email = "vladislav.nachev@gmail.com", role = c("aut", "cre"))
+Description: An R implementation of the learning curve analysis method published in Gallistel et al. (2004).
+  From a sequence of responses the changes in response (e.g. from one response frequency to another or from
+	one response level to another) are estimated using different statistical tests and a threshold criterion.
+	Currently only discrete binary responses are handled. Contact the author if you would like to request
+	the implementation of continuous responses.
+References: Gallistel CR, Fairhurst S, Balsam P (2004) The learning curve:
+  Implications of a quantitative analysis. PNAS 101:13124-13131. doi: 10.1073/pnas.0404965101
+Depends: R (>= 3.2.2)
+Imports: dplyr
+Suggests: ggplot2
+License: GPL (>=2)
+LazyData: TRUE

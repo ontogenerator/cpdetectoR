@@ -40,15 +40,16 @@ The input can be either a vector:
 
 ```{r}
 library(cpdetectorr) # load package first
-cp_wrapper(c(rbinom(50,1,0.3), rbinom(50,1,0.8)), "binomial",2)
+cp_wrapper(c(rbinom(50,1,0.3), rbinom(50,1,0.8)), "binomial",2) #these data are randomly generated
+# so the output will differ every time the code is executed
 ```
 
 or a data frame:
 
 ```{r}
 d_responses <- data.frame(Responses = c(rbinom(50,1,0.3),
-rbinom(50,1,0.8)))
-
+rbinom(50,1,0.8))) #these data are randomly generated
+# so the output will differ every time the code is executed
 cp_wrapper(d_responses, "chisquare",2)
 ```
 
@@ -76,11 +77,10 @@ With ggplot we can visualize the results by first generating a `data.frame` with
 library(ggplot2) # load the ggplot package
 eyeblinkdata <- data.frame(Trial = 1:length(eyeblink[,]),
                            CumRespMeasure = cumsum(eyeblink)[,])
-changepoints <- cp_wrapper(eyeblink, "binomial", 4)
-
+changepoints <- cp_wrapper(eyeblink, "binomial", 4) # save the output of the change point analysis
+#generate a cumulative response vs trial plot:
 ggplot(eyeblinkdata) + geom_line(aes(Trial, CumRespMeasure)) +
   geom_point(data = changepoints, aes(Trial, CumSs), size = 3)
-
 ```
 
 Another type of plot one can look at is the average response rate per trial vs trial.
@@ -92,6 +92,11 @@ plusmaze[,] # inspect data set
 # plot average response rate per trial, with dplyr::lead
 ggplot() + geom_step(data=cp.1, aes(Trial,dplyr::lead(Slopes))) +
   ylab("Average Response Rate per Trial") # ignore Warning message
+# for comparison, the cumulative response vs trial plot, as in the example above:
+plusmazedata <- data.frame(Trial = 1:length(plusmaze[,]),
+                           CumRespMeasure = cumsum(plusmaze)[,])
+ggplot(plusmazedata) + geom_line(aes(Trial, CumRespMeasure)) +
+  geom_point(data = cp.1, aes(Trial, CumSs), size = 3)
 ```
 
 

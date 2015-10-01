@@ -21,24 +21,27 @@ The input can be either a vector:
 
 ``` r
 library(cpdetectorr) # load package first
-cp_wrapper(c(rbinom(50,1,0.3), rbinom(50,1,0.8)), "binomial",2)
+cp_wrapper(c(rbinom(50,1,0.3), rbinom(50,1,0.8)), "binomial",2) #these data are randomly generated
 #>   Trial CumSs    Slopes
 #> 1     0     0        NA
-#> 2    47     9 0.1914894
-#> 3   100    49 0.7547170
+#> 2    48    13 0.2708333
+#> 3   100    54 0.7884615
+# so the output will differ every time the code is executed
 ```
 
 or a data frame:
 
 ``` r
 d_responses <- data.frame(Responses = c(rbinom(50,1,0.3),
-rbinom(50,1,0.8)))
-
+rbinom(50,1,0.8))) #these data are randomly generated
+# so the output will differ every time the code is executed
 cp_wrapper(d_responses, "chisquare",2)
 #>   Trial CumSs    Slopes
 #> 1     0     0        NA
-#> 2    52    18 0.3461538
-#> 3   100    61 0.8958333
+#> 2    36     7 0.1944444
+#> 3    40    11 1.0000000
+#> 4    48    12 0.1250000
+#> 5   100    57 0.8653846
 ```
 
 For the same value of the criterion, the chi square test usually gives a higher number of change points (in this case, false positives). The value of the criterion should lie between 1.3 and 6, corresponding to p values of 0.05 and 0.000001, respectively. These values are the logarithms of the odds against the null (no-change) hypothesis.
@@ -95,8 +98,8 @@ With ggplot we can visualize the results by first generating a `data.frame` with
 library(ggplot2) # load the ggplot package
 eyeblinkdata <- data.frame(Trial = 1:length(eyeblink[,]),
                            CumRespMeasure = cumsum(eyeblink)[,])
-changepoints <- cp_wrapper(eyeblink, "binomial", 4)
-
+changepoints <- cp_wrapper(eyeblink, "binomial", 4) # save the output of the change point analysis
+#generate a cumulative response vs trial plot:
 ggplot(eyeblinkdata) + geom_line(aes(Trial, CumRespMeasure)) +
   geom_point(data = changepoints, aes(Trial, CumSs), size = 3)
 ```
@@ -126,6 +129,16 @@ ggplot() + geom_step(data=cp.1, aes(Trial,dplyr::lead(Slopes))) +
 ```
 
 ![](README-unnamed-chunk-9-1.png)
+
+``` r
+# for comparison, the cumulative response vs trial plot, as in the example above:
+plusmazedata <- data.frame(Trial = 1:length(plusmaze[,]),
+                           CumRespMeasure = cumsum(plusmaze)[,])
+ggplot(plusmazedata) + geom_line(aes(Trial, CumRespMeasure)) +
+  geom_point(data = cp.1, aes(Trial, CumSs), size = 3)
+```
+
+![](README-unnamed-chunk-9-2.png)
 
 References
 ==========

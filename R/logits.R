@@ -38,7 +38,48 @@ rrd <- function(Cum, R)
 
   c(0,log10(Peqorl/Peqorm)) # Vector of the pseudologits
 
+}
 
+#' Compute the pseudologit vector for continuous random rate case
+#' @param Cum A cumulative interevent interval vector
+#' @param R A vector with trial numbers of putative change points
+#' @return L A vector giving for each trial the pseudologit, approximately
+#' the log of the odds that there has been a change point
+#' @details  For use when finding changes in the rate parameter of a random rate process.
+#' Not normally called directly, but via the cp_wrapper function instead
+
+rrc <- function(Cum, R)
+{
+  # The output is the vector giving for each event the pseudologit--log[P/(1-P+p)]--
+  # for the probability of observing n_a or fewer post-CP responses if lambda_a/lambda_b = 1
+  # where lambda_a and lambda_b are the rates of responding before and after
+  # the putative change point; P is the probability of observing N-R or fewer
+  # events after the putative change point; and p is the probability of
+  # observing exactly N-R events after the putative change point.
+  # Note that the numerator and denominator of the pseudologit are not complementary
+  # probabilities, as they are in a true logit; they both include the probability of observing
+  # exactly N-R events, where N is the total number of events at the moment of calculation.
+  # The putative change point is the row (R=event number) at which
+  # the difference between (N/Cum[N])*(Cum[R]) and Cum[R] is maximal
+  # N/Cum[N] is the slope of the cumulative record up to the Nth event
+  # Cum[R] is the time up to the Rth event
+  # A negative pseudologit means that n_a is less than expected
+
+  Ta <- Cum-Cum[R] # the interval elapsed since the putative CP
+  p <- Ta/Cum # probability of any one event falling after the putative CP
+  N <- 1:length(Cum) # event count vector
+  Na <- N - R # vector giving number of events since putative CP
+
+
+
+  Peqorl <- pbinom(Na,N,p)[-1]
+  # Probability of observing Na or fewer events in the interval Ta
+
+  Peqorm <- 1 - Peqorl + dbinom(Na,N,p)[-1] # Probability of observing Na or more events
+  # in the interval Ta. Note that this probability overlaps the "complementary" probability;
+  # both include the probability of observing exactly Na events.
+
+  c(0,log10(Peqorl/Peqorm)) # Vector of the pseudologits
 }
 
 
@@ -59,7 +100,7 @@ chi2logit <- function(Cum, R)
   # and NV gives the rows for which the chi square test cannot
   # validly be performed (because at least one cell has an expectation
   # less than 5).
-  N<-1:length(Cum) # The trial count vector
+  N <- 1:length(Cum) # The trial count vector
 
 
   Level1<- min(which(N>6)) # Finds the row
@@ -93,17 +134,122 @@ chi2logit <- function(Cum, R)
     # a data frame for the output is created, with each row representing a contingency table
     # for the subsequent tests. Further calculations depend on the dplyr package.
     mutate_(pchisq =
+              # a column with the (simulated) p values from chi square test is added
               ~ifelse(N > Level, chisq.test(cbind(c(Onespre, Onespost),
                                                   c(Zeroespre, Zeroespost)),
                                             simulate.p.value = TRUE, B = 1000)$p.value,1)) %>%
-    # a column with the (simulated) p values from chi square test is added
     mutate_(pchisq =
-             ~ifelse(N <= Level & N > Level1,fisher.test(
-               cbind(c(Onespre, Onespost),c(Zeroespre, Zeroespost)),
-               simulate.p.value = TRUE, B = 1000)$p.value,pchisq),
-           Lgt = ~ifelse(pchisq == 1,0,log10(pchisq*(1-pchisq))))
-  # For the cases in which chi square is invalid, calculate p values from Fisher's exact test
-  # Zeros logit values for the initial string of observations within which
-  # there are too few observations to do even Fisher's exact test
+              # For the cases in which chi square is invalid, calculate p values from
+              # Fisher's exact test. Zeros logit values are given for the initial string of
+              # observations within which there are too few observations to do even Fisher's exact test
+              ~ifelse(N <= Level & N > Level1,fisher.test(
+                cbind(c(Onespre, Onespost),c(Zeroespre, Zeroespost)),
+                simulate.p.value = TRUE, B = 1000)$p.value,pchisq),
+            Lgt = ~ifelse(pchisq == 1,0,log10(pchisq/(1-pchisq))))
+
   unlist(Output %>% select_("Lgt"), use.names = FALSE)
+}
+
+
+#' Uses t test to find first significant change point
+#' @param Data A vector of trial by trial measures or successive intervals
+#' @param R A vector of putative change points
+#' @param Crit Decision criterion, the value the logit must exceed
+#' for the function to return a significant change point
+#' @return CP The first significant change point
+#' @details This test is appropriate if one is looking for a change in the expectation of a
+#'  renewal event-generating process, where the interevent intervals are normally (rather than
+#'  exponentially) distributed.Not normally called directly, but via the cp_wrapper function instead.
+
+cpt <- function(Data, R, Crit)
+{
+  Data <- unlist(Data, use.names = FALSE)
+  L <- c(0,0) # initialization of the logit vector up to and including
+  # the row where the significance criterion (Crit) was exceeded
+  r <- 3 # Initializing for while loop, with index r
+
+  while(abs(L[length(L)]) < Crit)
+  { # loop that ends when critical L found or end of data reached
+    if (!is.na(R[r])) # if R[r] is NA skip to next r
+    {
+      if ((sum(sd(Data[1:R[r]]),sd(Data[(R[r]+1):r]), na.rm=TRUE)>0) &
+          (length(Data[1:R[r]]) > 1) & (length(Data[(R[r]+1):r]) > 1))# test cannot be run when
+        # there is no variance on either side of putative CP, for
+        # example, in the sequence 0 0 0 3 3 3 or from a single observation e.g. 0 vs 3 2 5
+      {
+        pb <- t.test(Data[1:R[r]],Data[(R[r]+1):r],"greater")$p.value # Probability
+        # that the mean after the putative change point is greater than the
+        # mean up to and including the putative change point
+        pl <- t.test(Data[1:R[r]],Data[(R[r]+1):r],"less")$p.value # Probability
+        # that the mean after the putative change point is less than the
+        # mean up to and including the putative change point
+        L[r] <- log10(pb/pl) # Latest logit
+      } else {
+        L[r] <- 0
+      } # end of if that computes individual logit (L) values
+    } # end of if that checks if R[r] is NA
+
+
+    r <- r + 1 # Incrementing latest row for next iteration
+    if (r>length(Data)) break # end of data reached
+
+  } # end of while loop
+
+  if (abs(L[length(L)])>Crit) CP <- R[r-1] else CP <- NULL # if no significant change point, CP empty
+  CP
+}
+
+
+#' Uses Komolgorov-Smirnov test to find first significant change point
+#' @param Data A vector of trial by trial measures or successive intervals
+#' @param R A vector of putative change points
+#' @param Crit Decision criterion, the value the logit must exceed
+#' for the function to return a significant change point
+#' @return r1 the change point row when the decision criterion is exceeded
+#' @details Not normally called directly, but via the cp_wrapper function instead.
+
+KS <- function(Data, R, Crit)
+{
+  # L is the pseudologit vector for rows where the
+  # approximation formula for the Kolmogorov-Smirnov p is valid.
+  # Its final value is the first value to exceed the decision criterion
+  # t is the col vector of rows for which L is defined
+  # r1 is the change point row when the decision criterion is exceeded
+  # r2 is the row at which the decision criterion is exceeded
+  # If there are no testable rows or if the decision criterion is never
+  # exceeded, the variables are returned empty
+
+  N <- 1:length(Data) # Number of rows in Data vector
+  r1 <- c()
+  r2 <- c()
+  t <- c()
+  L <- rep(0,length(N)) # initialization of the logit vector
+
+  Na <- N - R # Col vector giving for each row in Data the number of rows
+  # after the putative change point. So R gives the number of
+  # rows before the change point and Na the number after
+
+  Test <- which(Na*R/(Na+R)>=4) # For the approximation to the KS
+  # probability to be valid, the product of the two n's divided by
+  # the sum must be greater than or equal to 4. Test is the col
+  # vector of rows that satisfy this constraint--the row numbers(!),
+  # not the entries themselves
+
+  if (length(Test)>0){ # check if any rows satisfy the constraint and proceed
+    for (T in 1:length(Test)){
+      pval <- suppressWarnings(ks.test(Data[1:R[Test[T]]],
+                                       Data[(R[Test[T]]+1):Test[T]], exact = FALSE)$p.value)
+      L[T] <- log10((1-pval)/pval)
+      t[T] <- Test[T] # The row to which the latest value of L[T] "belongs"
+
+      if (L[T]>Crit) # Value of logit exceeds decision criterion
+      {
+        r2 <- Test[T] # the row (in Data) at which the criterion is exceeded
+        r1 <- R[Test[T]] # the change point when the criterion is exceeded
+        L <- L[1:T] # Drop rows of L after row in which decision criterion reached
+        break # Break out of loop when decision criterion exceeded
+      }
+    }
+  }
+  r1
 }

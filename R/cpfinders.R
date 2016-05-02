@@ -2,7 +2,7 @@
 #' @param Cum Input vector of cumulative response counts
 #' @return R A vector with the same length as Cum, with putative change points for each
 #' trial. These correspond to the preceding trial at which the deviation of the
-#' observed count from the expected count is maximal.
+#' observed count from the expected count is maximal
 #' @details Not normally called directly, but via the cp_wrapper function instead.
 
 cpd <- function(Cum)
@@ -32,8 +32,55 @@ cpd <- function(Cum)
   R <- left_join(data.frame(col=1:length(Cum)),
                  as.data.frame(which(Devs == mx & mx > 0, arr.ind=TRUE)),by="col") %>%
     rename_(R = "row", N = "col")
-  # R at this stage is is a data.frame with columns N, and R. R has the trial numbers of the
+  # R at this stage is a data.frame with columns N, and R. R has the trial numbers of the
   # putative change points and N - the trial numbers. This and further data manipulations
+  # depend on the dplyr package
+
+  unlist(R %>% group_by(N) %>% summarise_(R = ~min(R)) %>% select_("R"), use.names = FALSE)
+  #return only R as a vector
+}
+
+#' Find putative change point in continuous-time cumulative records
+#' @param Cum Input vector of the cumulative interevent intervals
+#' @return R A vector with the same length as Cum, with putative change points for each
+#' event. The putative change point corresponding to the Nth
+#' event is the preceding event at which the deviation of the observed event count
+#' from the expected event count is maximal. The expected event count
+#' at any earlier event, n, is Cum[n], the interval up to the nth event,
+#' divided by the average interevent interval over the range from n = 0 to n = N
+#' The deviation from expectation is n - this expectation. R is the value of n at
+#' which this deviation is maximal
+#' @details Not normally called directly, but via the cp_wrapper function instead
+
+cpc <- function(Cum)
+{
+  N <- 1:length(Cum) # Event count vector
+  Slopes <- N/Cum # Average slope up to given point in cumulative function
+
+  M <- diag(length(Cum))
+  M[upper.tri(M)] <- 1 # Mask with ones on and above diagonal & zeros below
+
+  Diagonal <- M * matrix(rep(Slopes, length(Slopes)), nrow = length(Slopes), byrow = TRUE)
+  # Creates an array in which successive cols have successive slopes of the cumulative record.
+  # The slope for a given col fills all the cells on and above the main diagonal
+
+  Preds <-  Cum * Diagonal
+  # Creates diagonal array of the predicted numbers of events at each time in Cum
+
+  Obs <- 1:length(Slopes) * M
+  # Diagonal array with actual numbers of events
+
+  Devs<- abs(Obs-Preds) # Diagonal array of deviations from expectations
+
+  mx <- M * matrix(rep((apply(Devs,2,max)), length(Slopes)), nrow = length(Slopes), byrow = TRUE)
+
+  # mx is a matrix listing the maxima of the deviations
+
+  R <- left_join(data.frame(col=1:length(Cum)),
+                 as.data.frame(which(Devs == mx & mx > 0, arr.ind=TRUE)),by="col") %>%
+    rename_(R = "row", N = "col")
+  # R at this stage is a data.frame with columns N, and R. R has the cumulative inter-event intervals
+  # of the putative change points and N - the event numbers. This and further data manipulations
   # depend on the dplyr package.
 
   unlist(R %>% group_by(N) %>% summarise_(R = ~min(R)) %>% select_("R"), use.names = FALSE)

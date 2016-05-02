@@ -1,14 +1,15 @@
-#' cpdetector: Change point estimation in learning curves.
+#' cpdetector: Change point estimation in learning curves
 #'
-#' The code is adapted from Gallistel et al. (2004).
-#' The package consists of a few internal functions and one wrapper function, cp_wrapper.
+#' The code is from Gallistel et al. (2004), translated from Matlab to R, with large portions of
+#' comments and original code preserved. The package consists of a few internal functions and one
+#' wrapper function, cp_wrapper.
 #'
 #' @docType package
 #' @name cpdetectorr
 #' @import dplyr
 NULL
 
-#' Data on rabbit eyeblink conditioning.
+#' Data on rabbit eyeblink conditioning
 #'
 #' Data from Gallistel et al. (2004). Original data description: "[Data] are binary, 1 or 0, according
 #' as a conditioned blink did or did not occur on a trial. They are discrete-trial data, so the
@@ -20,7 +21,7 @@ NULL
 #' @source \url{http://www.pnas.org/content/suppl/2004/08/31/0404965101.DC1/04965DataSet5.txt/}
 "eyeblink"
 
-#' Data on correct choices in a + maze.
+#' Data on correct choices in a + maze
 #'
 #' Data from Gallistel et al. (2004). Original data description: "These are
 #' frequencies, so, in principle, a chisquare test is appropriate to test for changes in the
@@ -40,3 +41,51 @@ NULL
 #'
 #' @source \url{http://www.pnas.org/content/suppl/2004/08/31/0404965101.DC1/04965DataSet3.txt/}
 "plusmaze"
+
+#' Data on interreward intervals in a matching experiment with concurrent variable
+#' interval schedules
+#'
+#' Data from Gallistel et al. (2004). Original data description: "These are an example of a
+#' continuous-time data record: the successive entries are the durations of the successive
+#' interreward intervals. Thus, the putative change points must be found by [setting isDiscrete = FALSE].
+#' The interevent intervals are approximately exponentially distributed [...]. Thus, the process
+#' approximates a random rate process and the random rate logit method is appropriate [...]."
+#'
+#' @source \url{http://www.pnas.org/content/suppl/2004/08/31/0404965101.DC1/04965DataSet1.txt/}
+"matching"
+
+#' Data on successive hopper-entry speeds
+#'
+#' Data from Gallistel et al. (2004). Original data description: "A hopper entry speed is the
+#' reciprocal of the latency between the rise of the grain bin into the feeding hopper and the
+#' entry of the pigeon's head into the hopper. These data are an example of a discrete-time
+#' data record. [...] The entry speeds are approximately normally distributed [... t]hus, the the t-test
+#' is appropriate for testing for a change in the mean entry latency."
+#'
+#' @source \url{http://www.pnas.org/content/suppl/2004/08/31/0404965101.DC1/04965DataSet2.txt/}
+"hopperentry"
+
+#' Data on feeding-by-feeding preference scores in a mouse matching experiment
+#'
+#' Data from Gallistel et al. (2004). Original data description: "The side-preference score during
+#' any one interfeeding interval is the difference between the amounts of time spent at each
+#' feeding hopper divided by their sum. These are discrete-trial, real-valued measures [...]
+#' They do not obey any standard distribution, so the Kolmogorov-Smirnov test is appropriate
+#' for comparing the distributions before and after a putative change point."
+#'
+#' @source \url{http://www.pnas.org/content/suppl/2004/08/31/0404965101.DC1/04965DataSet4.txt/}
+"feedingpref"
+
+#' Data on swim efficiencies in a rat learning a water maze
+#'
+#' Data from Gallistel et al. (2004). Original data description: "The swim efficiency is the
+#' straight-line distance between where the rat is placed in the tank and the location of the
+#' platform divided by the distance actually swum in reaching the platform. These are again
+#' discrete-trial data. The measures can fall anywhere in the interval from 0 to 1. They do
+#' not appear to be normally distributed, so one might want to use the K-S statistic. However,
+#' there are only 32 trials (data) and the K-S test requires a minimum of 4 data in each sample
+#' (before and after a putative change point), so one might also want to try the t test on
+#' these data."
+#'
+#' @source \url{http://www.pnas.org/content/suppl/2004/08/31/0404965101.DC1/04965DataSet6.txt/}
+"watermaze"

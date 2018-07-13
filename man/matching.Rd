@@ -13,11 +13,11 @@ interval schedules}
 matching
 }
 \description{
-Data from Gallistel et al. (2004). Original data description: "These are an example of a
-continuous-time data record: the successive entries are the durations of the successive
-interreward intervals. Thus, the putative change points must be found by [setting isDiscrete = FALSE].
-The interevent intervals are approximately exponentially distributed [...]. Thus, the process
-approximates a random rate process and the random rate logit method is appropriate [...]."
+Data from Gallistel et al. (2004). Original data description: "These are an example of
+a continuous-time data record: the successive entries are the durations of the
+successive interreward intervals. Thus, the putative change points must be found by
+[setting isDiscrete = FALSE]. The interevent intervals are approximately exponentially
+distributed [...]. Thus, the process approximates a random rate process and the random
+rate logit method is appropriate [...]."
 }
 \keyword{datasets}
-

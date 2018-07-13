@@ -21,8 +21,8 @@ CP The first significant change point
 Uses t test to find first significant change point
 }
 \details{
-This test is appropriate if one is looking for a change in the expectation of a
- renewal event-generating process, where the interevent intervals are normally (rather than
- exponentially) distributed.Not normally called directly, but via the cp_wrapper function instead.
+This test is appropriate if one is looking for a change in the expectation of
+a renewal event-generating process, where the interevent intervals are normally (rather
+than exponentially) distributed. Not normally called directly, but via the cp_wrapper
+function instead.
 }
-

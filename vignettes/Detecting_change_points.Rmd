@@ -1,37 +1,27 @@
 ---
-output:
-  md_document:
-    variant: markdown_github
+title: "Detecting change points"
+author: "Vladislav Nachev"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Detecting change points}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
-
-```{r, echo = FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  fig.path = "README-"
+  comment = "#>"
 )
 ```
 
-# Description
-
-This package is for finding change points in sequences of responses. Putative change
+The `cpdetectorr` package is for finding change points in sequences of responses. Putative change
 points are first detected, then a statistical test at a predefined significance
 level (Criterion) is applied to decide if the change point is supported or not.
-Based on algorithm published by [Gallistel et al. (2004)](http://dx.doi.org/10.1073/pnas.0404965101), translated from Matlab into R. 
+Based on algorithm published by [Gallistel et al. (2004)](http://dx.doi.org/10.1073/pnas.0404965101)^[Gallistel CR, Fairhurst S, Balsam P (2004) The learning curve:
+  Implications of a quantitative analysis. PNAS 101:13124-13131. doi: 10.1073/pnas.0404965101], translated from Matlab into R. 
 
-# Installation
-
-You can use `devtools` to install the package from Github. Install the devtools package first, then execute this code in R(Studio):
-
-```{r, eval = FALSE}
-devtools::install_github('ontogenerator/cpdetectorr')
-```
-
-# Examples
-
-There is a main wrapper function, called `cp_wrapper`, which can be used to analyze
-sequences of responses. The first argument of the function is the input. Thes second argument indicates whether the input contains discrete-trial data (TRUE), or successive real value intervals (FALSE).  The third argument gives the statistical test ("KS", "ttest", "binomial", or "chisquare"). The different tests usually give similar, but often different results. The third and last argument is the criterion, with values between 1.3 and 6.
 
 The input can be either a vector:
 
@@ -124,8 +114,3 @@ pl4 <- ggplotGrob(ggplot(cp.3) + geom_step(aes(Time, Slopes)) +
   ylab("Events per Unit Time"))
 grid::grid.draw(rbind(pl3, pl4, size = "first"))
 ```
-
-
-# References
-1. Gallistel CR, Fairhurst S, Balsam P (2004) The learning curve:
-  Implications of a quantitative analysis. PNAS 101:13124-13131. doi: 10.1073/pnas.0404965101

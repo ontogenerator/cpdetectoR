@@ -12,11 +12,11 @@
 hopperentry
 }
 \description{
-Data from Gallistel et al. (2004). Original data description: "A hopper entry speed is the
-reciprocal of the latency between the rise of the grain bin into the feeding hopper and the
-entry of the pigeon's head into the hopper. These data are an example of a discrete-time
-data record. [...] The entry speeds are approximately normally distributed [... t]hus, the the t-test
-is appropriate for testing for a change in the mean entry latency."
+Data from Gallistel et al. (2004). Original data description: "A hopper entry speed is
+the reciprocal of the latency between the rise of the grain bin into the feeding hopper
+and the entry of the pigeon's head into the hopper. These data are an example of a
+discrete-time data record. [...] The entry speeds are approximately normally
+distributed [... t]hus, the the t-test is appropriate for testing for a change in the
+mean entry latency."
 }
 \keyword{datasets}
-

@@ -1,25 +1,30 @@
 Package: cpdetectorr
 Type: Package
 Title: Change point estimation from sequences of choices
-Version: 1.0.0.0000
-Date: 2015-09-25
-Authors@R: person("Vladislav", "Nachev", email = "vladislav.nachev@gmail.com", role = c("aut", "cre"))
+Version: 1.1.0
+Date: 2018-07-17
+Authors@R: person("Vladislav", "Nachev", email = "vladislav.nachev@gmail.com",
+  role = c("aut", "cre"))
 URL: http://github.com/ontogenerator/cpdetectorr
 BugReports: http://github.com/ontogenerator/cpdetectorr/issues
 Description: An R implementation of the learning curve analysis method published
-    in Gallistel et al. (2004). From a sequence of responses the changes in response
-    (e.g. from one response frequency to another or from one response level to
-    another) are estimated using different statistical tests and a threshold
-    criterion.
+  in Gallistel et al. (2004). From a sequence of responses the changes in response
+  (e.g. from one response frequency to another or from one response level to
+  another) are estimated using different statistical tests and a threshold
+  criterion.
 References: Gallistel CR, Fairhurst S, Balsam P (2004) The learning curve:
-    Implications of a quantitative analysis. PNAS 101:13124-13131. doi: 10.1073/
-    pnas.0404965101
+  Implications of a quantitative analysis. PNAS 101:13124-13131. doi: 10.1073/
+  pnas.0404965101
 Depends:
-    R (>= 3.2.2)
+  R (>= 3.2.2)
 Imports:
-    dplyr
+  stats
 Suggests:
-    ggplot2
-License: GPL (>=2)
+  dplyr,
+  ggplot2,
+  knitr,
+  rmarkdown
+License: GPL (>=3)
 LazyData: TRUE
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
+VignetteBuilder: knitr

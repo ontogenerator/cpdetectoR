@@ -26,6 +26,6 @@ Truncate the cumulative record at significant change point
 }
 \details{
 Not normally called directly, but via the cp_wrapper function instead.
-Works for both discrete and continuous cumulative records. All input arguments obligatory.
+Works for both discrete and continuous cumulative records. All input arguments are
+obligatory.
 }
-

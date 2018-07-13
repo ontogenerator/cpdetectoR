@@ -21,4 +21,3 @@ Compute the pseudologit vector for random rate discrete data, using binomial tes
 \details{
 Not normally called directly, but via the cp_wrapper function instead
 }
-

@@ -12,11 +12,11 @@
 feedingpref
 }
 \description{
-Data from Gallistel et al. (2004). Original data description: "The side-preference score during
-any one interfeeding interval is the difference between the amounts of time spent at each
-feeding hopper divided by their sum. These are discrete-trial, real-valued measures [...]
-They do not obey any standard distribution, so the Kolmogorov-Smirnov test is appropriate
-for comparing the distributions before and after a putative change point."
+Data from Gallistel et al. (2004). Original data description: "The side-preference
+score during any one interfeeding interval is the difference between the amounts of
+time spent at each feeding hopper divided by their sum. These are discrete-trial,
+real-valued measures [...] They do not obey any standard distribution,
+so the Kolmogorov-Smirnov test is appropriate for comparing the distributions before
+and after a putative change point."
 }
 \keyword{datasets}
-

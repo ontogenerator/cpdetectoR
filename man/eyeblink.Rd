@@ -12,12 +12,11 @@
 eyeblink
 }
 \description{
-Data from Gallistel et al. (2004). Original data description: "[Data] are binary, 1 or 0, according
-as a conditioned blink did or did not occur on a trial. They are discrete-trial data, so the
-cpd function must be used to find putative change points. They are frequency data, so
-one might try using the chisquare test. However, these are the kind of data that cause the
-chisquare test to run into computational difficulties. The random rate test works better
-with these data."
+Data from Gallistel et al. (2004). Original data description: "[Data] are binary,
+1 or 0, according as a conditioned blink did or did not occur on a trial. They are
+discrete-trial data, so the cpd function must be used to find putative change points.
+They are frequency data, so one might try using the chisquare test. However, these are
+the kind of data that cause the chisquare test to run into computational difficulties.
+The random rate test works better with these data."
 }
 \keyword{datasets}
-

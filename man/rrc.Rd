@@ -22,4 +22,3 @@ Compute the pseudologit vector for continuous random rate case
 For use when finding changes in the rate parameter of a random rate process.
 Not normally called directly, but via the cp_wrapper function instead
 }
-

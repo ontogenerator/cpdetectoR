@@ -21,25 +21,24 @@ The input can be either a vector:
 
 ``` r
 library(cpdetectorr) # load package first
-cp_wrapper(c(rbinom(50,1,0.3), rbinom(50,1,0.8)), TRUE, "binomial", 2) #these data are randomly generated
+set.seed(25)
+cp_wrapper(c(rbinom(50, 1, 0.3), rbinom(50, 1, 0.8)), TRUE, "binomial", 2)
 #>   Trial CumSs    Slopes
-#> 1     0     0 0.2916667
-#> 2    48    14 0.9038462
-#> 3   100    61 0.9038462
-# so the output will differ every time the code is executed
+#> 1     0     0 0.2173913
+#> 2    46    10 0.8518519
+#> 3   100    56 0.8518519
 ```
 
 or a data frame:
 
 ``` r
-d_responses <- data.frame(Responses = c(rbinom(50,1,0.3),
-rbinom(50,1,0.8))) #these data are randomly generated
-# so the output will differ every time the code is executed
+d_responses <- data.frame(Responses = c(rbinom(50, 1, 0.3), rbinom(50, 1, 0.8)))
 cp_wrapper(d_responses, TRUE, "chisquare", 2)
-#>   Trial CumSs   Slopes
-#> 1     0     0 0.254902
-#> 2    51    13 0.755102
-#> 3   100    50 0.755102
+#>   Trial CumSs Slopes
+#> 1     0     0   0.08
+#> 2    25     2   0.36
+#> 3    50    11   0.82
+#> 4   100    52   0.82
 ```
 
 For the same value of the criterion, the chi square test usually gives a higher number of change points (in this case, false positives) than the binomial test. The value of the criterion should lie between 1.3 and 6, corresponding to p values of 0.05 and 0.000001, respectively. These values are the logarithms of the odds against the null (no-change) hypothesis.
@@ -102,7 +101,7 @@ ggplot(eyeblinkdata) + geom_line(aes(Trial, CumRespMeasure)) +
   geom_point(data = changepoints, aes(Trial, CumSs), size = 3)
 ```
 
-![](README-unnamed-chunk-8-1.png)<!-- -->
+![](README-unnamed-chunk-8-1.png)
 
 Another type of plot one can look at is the average response rate per trial vs trial. The `plusmaze` data set included with the package contains frequency data, that are again preferrably analyzed with the random rate (binomial) test.
 
@@ -121,11 +120,11 @@ plusmaze[,] # inspect data set
 #> 3    36     9 0.6341463
 #> 4   200   113 0.6341463
 # plot average response rate per trial
-ggplot() + geom_step(data=cp.1, aes(Trial,Slopes)) +
+ggplot() + geom_step(data = cp.1, aes(Trial,Slopes)) +
   ylab("Average Response Rate per Trial")
 ```
 
-![](README-unnamed-chunk-9-1.png)<!-- -->
+![](README-unnamed-chunk-9-1.png)
 
 ``` r
 # for comparison, the cumulative response vs trial plot, as in the example above:
@@ -135,7 +134,7 @@ ggplot(plusmazedata) + geom_line(aes(Trial, CumRespMeasure)) +
   geom_point(data = cp.1, aes(Trial, CumSs), size = 3)
 ```
 
-![](README-unnamed-chunk-9-2.png)<!-- -->
+![](README-unnamed-chunk-9-2.png)
 
 The attached data set `hopperentry` contains hopper-entry speeds from pigeons, an example of normally distributed data. Consequently the t test can be used.
 
@@ -152,13 +151,13 @@ hedata <- data.frame(Trial = 1:length(hopperentry[,]),
 pl1 <- ggplotGrob(ggplot(hedata) + geom_line(aes(Trial, CumRespMeasure)) +
   geom_point(data = cp.2, aes(Trial, CumSs), size = 3))
 # plot average response rate per trial
-pl2 <- ggplotGrob(ggplot(cp.2) + geom_step(aes(Trial,Slopes)) +
+pl2 <- ggplotGrob(ggplot(cp.2) + geom_step(aes(Trial, Slopes)) +
   ylab("Average Response Rate per Trial"))
 # stack the two plots vertically using the grid package
-grid::grid.draw(rbind(pl1,pl2, size = "first"))
+grid::grid.draw(rbind(pl1, pl2, size = "first"))
 ```
 
-![](README-unnamed-chunk-10-1.png)<!-- -->
+![](README-unnamed-chunk-10-1.png)
 
 An example for continuous data is the attached `matching` data set. The plots need different axes and labels:
 
@@ -176,12 +175,12 @@ matchingdata <- data.frame(Events = 1:length(matching[,]),
 pl3 <- ggplotGrob(ggplot(matchingdata) + geom_line(aes(Time, Events)) +
   geom_point(data = cp.3, aes(Time, Events), size = 3))
 # plot average response rate per trial
-pl4 <- ggplotGrob(ggplot(cp.3) + geom_step(aes(Time,Slopes)) +
+pl4 <- ggplotGrob(ggplot(cp.3) + geom_step(aes(Time, Slopes)) +
   ylab("Events per Unit Time"))
-grid::grid.draw(rbind(pl3,pl4, size = "first"))
+grid::grid.draw(rbind(pl3, pl4, size = "first"))
 ```
 
-![](README-unnamed-chunk-11-1.png)<!-- -->
+![](README-unnamed-chunk-11-1.png)
 
 References
 ==========

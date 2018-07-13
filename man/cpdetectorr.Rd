@@ -6,8 +6,7 @@
 \alias{cpdetectorr-package}
 \title{cpdetector: Change point estimation in learning curves}
 \description{
-The code is from Gallistel et al. (2004), translated from Matlab to R, with large portions of
-comments and original code preserved. The package consists of a few internal functions and one
-wrapper function, cp_wrapper.
+The code is from Gallistel et al. (2004), translated from Matlab to R, with large
+portions of comments and original code preserved. The package consists of a few
+internal functions and one wrapper function, cp_wrapper.
 }
-

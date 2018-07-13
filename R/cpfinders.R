@@ -8,14 +8,14 @@
 cpd <- function(Cum)
 {
   N <- 1:length(Cum) #Trial count vector
-  Slopes <- Cum/N #Average count or measure per trial for trials 1 to N
+  Slopes <- Cum / N #Average count or measure per trial for trials 1 to N
 
   M <- diag(length(Cum))
   M[upper.tri(M)] <- 1 # Mask with ones on and above diagonal & zeros below
 
   Diag <- M * matrix(rep(Slopes, length(Slopes)), nrow = length(Slopes), byrow = TRUE)
-  # Creates an array in which successive cols have successive slopes of the cumulative record.
-  # The slope for a given col fills all the cells on and above the main diagonal
+  # Creates an array in which successive cols have successive slopes of the cumulative
+  # record. The slope for a given col fills all the cells on and above the main diagonal
 
   Preds <- 1:length(Slopes) * Diag
   # Predicted (expected) cumulative values in a diagonal array
@@ -23,21 +23,26 @@ cpd <- function(Cum)
   Obs <- Cum * M
   # Diagonal array of observed cumulations
 
-  Devs<- abs(Obs-Preds) # Diagonal array of deviations from expectations
+  Devs <- abs(Obs - Preds) # Diagonal array of deviations from expectations
 
-  mx <- M * matrix(rep((apply(Devs,2,max)), length(Slopes)), nrow = length(Slopes), byrow = TRUE)
+  mx <- M * matrix(rep((apply(Devs, 2, max)), length(Slopes)), nrow = length(Slopes),
+                   byrow = TRUE)
 
   # mx is a matrix listing the maxima of the deviations
 
-  R <- left_join(data.frame(col=1:length(Cum)),
-                 as.data.frame(which(Devs == mx & mx > 0, arr.ind=TRUE)),by="col") %>%
-    rename_(R = "row", N = "col")
-  # R at this stage is a data.frame with columns N, and R. R has the trial numbers of the
-  # putative change points and N - the trial numbers. This and further data manipulations
-  # depend on the dplyr package
+  R <- merge(data.frame(col = 1:length(Cum)),
+                 as.data.frame(which(Devs == mx & mx > 0, arr.ind = TRUE)), by = "col",
+             all.x = TRUE)
 
-  unlist(R %>% group_by(N) %>% summarise_(R = ~min(R)) %>% select_("R"), use.names = FALSE)
-  #return only R as a vector
+  names(R)[names(R) == "row"] <- "R"
+  names(R)[names(R) == "col"] <- "N"
+  # R at this stage is a data.frame with columns N, and R. R has the trial numbers of the
+  # putative change points and N - the trial numbers.
+
+  stats::aggregate(R$R, by = R["N"], min)$x
+
+  # return the minimum of the trial numbers of the putative change points for each trial
+  # number
 }
 
 #' Find putative change point in continuous-time cumulative records
@@ -55,14 +60,14 @@ cpd <- function(Cum)
 cpc <- function(Cum)
 {
   N <- 1:length(Cum) # Event count vector
-  Slopes <- N/Cum # Average slope up to given point in cumulative function
+  Slopes <- N / Cum # Average slope up to given point in cumulative function
 
   M <- diag(length(Cum))
   M[upper.tri(M)] <- 1 # Mask with ones on and above diagonal & zeros below
 
   Diagonal <- M * matrix(rep(Slopes, length(Slopes)), nrow = length(Slopes), byrow = TRUE)
-  # Creates an array in which successive cols have successive slopes of the cumulative record.
-  # The slope for a given col fills all the cells on and above the main diagonal
+  # Creates an array in which successive cols have successive slopes of the cumulative
+  # record. The slope for a given col fills all the cells on and above the main diagonal
 
   Preds <-  Cum * Diagonal
   # Creates diagonal array of the predicted numbers of events at each time in Cum
@@ -70,21 +75,26 @@ cpc <- function(Cum)
   Obs <- 1:length(Slopes) * M
   # Diagonal array with actual numbers of events
 
-  Devs<- abs(Obs-Preds) # Diagonal array of deviations from expectations
+  Devs <- abs(Obs - Preds) # Diagonal array of deviations from expectations
 
-  mx <- M * matrix(rep((apply(Devs,2,max)), length(Slopes)), nrow = length(Slopes), byrow = TRUE)
+  mx <- M * matrix(rep((apply(Devs, 2, max)), length(Slopes)), nrow = length(Slopes),
+                   byrow = TRUE)
 
   # mx is a matrix listing the maxima of the deviations
 
-  R <- left_join(data.frame(col=1:length(Cum)),
-                 as.data.frame(which(Devs == mx & mx > 0, arr.ind=TRUE)),by="col") %>%
-    rename_(R = "row", N = "col")
-  # R at this stage is a data.frame with columns N, and R. R has the cumulative inter-event intervals
-  # of the putative change points and N - the event numbers. This and further data manipulations
-  # depend on the dplyr package.
+  R <- merge(data.frame(col = 1:length(Cum)),
+             as.data.frame(which(Devs == mx & mx > 0, arr.ind = TRUE)), by = "col",
+             all.x = TRUE)
 
-  unlist(R %>% group_by(N) %>% summarise_(R = ~min(R)) %>% select_("R"), use.names = FALSE)
-  #return only R as a vector
+  names(R)[names(R) == "row"] <- "R"
+  names(R)[names(R) == "col"] <- "N"
+  # R at this stage is a data.frame with columns N, and R. R has the cumulative
+  # inter-event intervals of the putative change points and N - the event numbers.
+
+  stats::aggregate(R$R, by = R["N"], min)$x
+
+  # return the minimum of the trial numbers of the putative change points for each trial
+  # number
 }
 
 #' Truncate the cumulative record at significant change point
@@ -97,7 +107,8 @@ cpc <- function(Cum)
 #' Lt, the truncated L vector up to the row at which a change point was detected,
 #' and r, the row at which L was truncated.
 #' @details Not normally called directly, but via the cp_wrapper function instead.
-#' Works for both discrete and continuous cumulative records. All input arguments obligatory.
+#' Works for both discrete and continuous cumulative records. All input arguments are
+#' obligatory.
 
 trun <- function(Cum, R, L, Crit)
 {
@@ -107,9 +118,9 @@ trun <- function(Cum, R, L, Crit)
   # r is row at which it was truncated.
 
   La <- abs(L)
-  if(length(which(La>Crit))>0) {
-    Alert <- min(which(La>Crit))# Finds first row where decision criterion is exceeded
-  } else { # If there is no such row, then Alert will be NULL
+  if (length(which(La > Crit)) > 0) {
+    Alert <- min(which(La > Crit))# Finds first row where decision criterion is exceeded
+  } else {# If there is no such row, then Alert will be NULL
     Alert <- NULL
   }
 
@@ -122,12 +133,12 @@ trun <- function(Cum, R, L, Crit)
     # significant logit.This putative change point is always the number of an earlier
     # event or trial
 
-    I <- c(Cum[1],diff(Cum)) # Interevent interval vector OR vector
+    I <- c(Cum[1], diff(Cum)) # Interevent interval vector OR vector
     # of responses on successive trials
 
-    Cumt <- cumsum(I[(r+1):(length(I))]) # Truncated cumulative record
+    Cumt <- cumsum(I[(r + 1):(length(I))]) # Truncated cumulative record
 
-    Lt<- L[1:Alert] # Truncated logit vector
+    Lt <- L[1:Alert] # Truncated logit vector
 
     list(Cumt = Cumt, Lt = Lt, r = r)
   }

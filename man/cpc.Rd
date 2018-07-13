@@ -25,4 +25,3 @@ Find putative change point in continuous-time cumulative records
 \details{
 Not normally called directly, but via the cp_wrapper function instead
 }
-

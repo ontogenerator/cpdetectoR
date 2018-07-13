@@ -23,4 +23,3 @@ Uses Komolgorov-Smirnov test to find first significant change point
 \details{
 Not normally called directly, but via the cp_wrapper function instead.
 }
-

@@ -20,4 +20,3 @@ Find putative change point in discrete-time cumulative records
 \details{
 Not normally called directly, but via the cp_wrapper function instead.
 }
-

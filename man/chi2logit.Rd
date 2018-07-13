@@ -2,7 +2,8 @@
 % Please edit documentation in R/logits.R
 \name{chi2logit}
 \alias{chi2logit}
-\title{Compute the pseudologit vector for random discrete data using Chi squared and Fisher exact tests}
+\title{Compute the pseudologit vector for random discrete data using Chi squared and Fisher
+exact tests}
 \usage{
 chi2logit(Cum, R)
 }
@@ -16,12 +17,13 @@ Lgt A vector giving for each trial the pseudologit, approximately
 the log of the odds that there has been a change point
 }
 \description{
-Compute the pseudologit vector for random discrete data using Chi squared and Fisher exact tests
+Compute the pseudologit vector for random discrete data using Chi squared and Fisher
+exact tests
 }
 \details{
-Not normally called directly, but via the cp_wrapper function instead. For cases, in which
-the chi square test is not valid (expected obersavations all smaller than 5), the Fisher exact test
-is used instead. Occasionally, for noisy data even this test will fail. In that case use the
-rrd function instead.
+Not normally called directly, but via the cp_wrapper function instead.
+For cases, in which the chi square test is not valid (expected obersavations all
+smaller than 5), the Fisher exact test is used instead. Occasionally, for noisy data
+even this test will fail. In that case use the rrd function instead. Notice that the p
+values delivered by this test are estimated from a 1000 Monte Carlo simulations.
 }
-

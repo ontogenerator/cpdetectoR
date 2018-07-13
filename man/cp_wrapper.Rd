@@ -13,36 +13,36 @@ cp_wrapper(input, isDiscrete, test, Crit)
 false if continuous, e.g. succesive intervals}
 
 \item{test}{Name of the test to be performed. The following tests are implemented:
-"binomial" (random rate), "chisquare", "ttest", "KS" (Komolgorov-Smirnov). The binomial test is
-used for finding changes in the rate parameter of a random rate process, either intermittently
-(isDiscrete = TRUE) or continuously (isDiscrete = FALSE) sampled. The chi square test is used with
-data where there has been a frequency change, as in, e.g. correct choices. The t test should be
-used for normally distributed data. The Komolgorov-Smirnof test is used for data with nonnormal or
-unknown distribution.}
+"binomial" (random rate), "chisquare", "ttest", "KS" (Komolgorov-Smirnov). The binomial
+test is used for finding changes in the rate parameter of a random rate process, either
+intermittently (isDiscrete = TRUE) or continuously (isDiscrete = FALSE) sampled.
+The chi square test is used with data where there has been a frequency change, as in,
+e.g. correct choices. The t test should be used for normally distributed data.
+The Komolgorov-Smirnof test is used for data with nonnormal or unknown distribution.}
 
-\item{Crit}{A real-valued decision criterion on logit. Values recommended by Gallistel et al. (2004)
-are between 1.3 and 6, which correspond to p values of 0.05 and 0.000001, respectively.
-The values are the logarithms of the odds against the null (no-change) hypothesis.
-logit = log[(1-p)/p], where p is the desired significance level}
+\item{Crit}{A real-valued decision criterion on logit. Values recommended by
+Gallistel et al. (2004) are between 1.3 and 6, which correspond to p values of 0.05 and
+0.000001, respectively. The values are the logarithms of the odds against the null
+(no-change) hypothesis. logit = log[(1-p)/p], where p is the desired significance level}
 }
 \value{
 A data frame with the number of Trials (Trial) for each change point detected,
 the cumulative number of correct responses, or successes, (CumSs),
-and the ratio of correct/total choices (Slopes) for the trials since the last change point
-and the current change point
+and the ratio of correct/total choices (Slopes) for the trials since the last change
+point and the current change point
 }
 \description{
 Find change points in a sequence of choices based on given test and decision criterion
 }
 \examples{
 # generate dummy data with a change point at trial 120
-input <- c(rbinom(120,1,0.5),rbinom(200,1,0.8))
+input <- c(rbinom(120, 1, 0.5), rbinom(200, 1, 0.8))
 cp_wrapper(input, TRUE, "chisquare", 3)
 cp_wrapper(input, TRUE, "binomial", 3)
 
 # use included eyeblink data set:
 eyeblink[,] # inspect data set
-cp_wrapper(eyeblink, TRUE, "chisquare", 4)
+cp_wrapper(eyeblink, TRUE, "chisquare", 3)
 # using small criterion, e.g. 2, fails due to computational problems
 # better use "binomial" instead
 cp_wrapper(eyeblink, TRUE, "binomial", 2)
@@ -62,17 +62,17 @@ my.data <- data.frame(Trial = 1:length(plusmaze[,]),
 CumRespMeasure = cumsum(plusmaze)[,])
 # plot cumulative learning curve with change points
 ggplot(my.data) + geom_line(aes(Trial,CumRespMeasure)) +
- geom_point(data=cp.1, aes(Trial, CumSs), shape=1, size = 6, color = "blue") +
- geom_point(data=cp.2, aes(Trial, CumSs), shape=2, size = 3, color = "green") +
- geom_point(data=cp.3, aes(Trial, CumSs), shape=3, size = 3, color = "red")
+ geom_point(data = cp.1, aes(Trial, CumSs), shape = 1, size = 6, color = "blue") +
+ geom_point(data = cp.2, aes(Trial, CumSs), shape = 2, size = 3, color = "green") +
+ geom_point(data = cp.3, aes(Trial, CumSs), shape = 3, size = 3, color = "red")
 
 # plot average response rate per trial
-ggplot() + geom_step(data=cp.1, aes(Trial,Slopes)) +
+ggplot() + geom_step(data = cp.1, aes(Trial, Slopes)) +
  ylab("Average Response Rate per Trial")
 
 }
 \references{
 Gallistel CR, Fairhurst S, Balsam P (2004) The learning curve:
-Implications of a quantitative analysis. PNAS 101:13124-13131. doi: 10.1073/pnas.0404965101
+Implications of a quantitative analysis. PNAS 101:13124-13131.
+doi: 10.1073/pnas.0404965101
 }
-

@@ -8,13 +8,10 @@ Authors@R: person("Vladislav", "Nachev", email = "vladislav.nachev@gmail.com",
 URL: http://github.com/ontogenerator/cpdetectorr
 BugReports: http://github.com/ontogenerator/cpdetectorr/issues
 Description: An R implementation of the learning curve analysis method published
-  in Gallistel et al. (2004). From a sequence of responses the changes in response
+  in Gallistel et al., 2004. From a sequence of responses the changes in response
   (e.g. from one response frequency to another or from one response level to
   another) are estimated using different statistical tests and a threshold
   criterion.
-References: Gallistel CR, Fairhurst S, Balsam P (2004) The learning curve:
-  Implications of a quantitative analysis. PNAS 101:13124-13131. doi: 10.1073/
-  pnas.0404965101
 Depends:
   R (>= 3.2.2)
 Imports:

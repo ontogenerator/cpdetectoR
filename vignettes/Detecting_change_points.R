@@ -5,7 +5,7 @@ knitr::opts_chunk$set(
 )
 
 ## ------------------------------------------------------------------------
-library(cpdetectorr) # load package first
+library(cpdetectoR) # load package first
 set.seed(25)
 cp_wrapper(c(rbinom(50, 1, 0.3), rbinom(50, 1, 0.8)), TRUE, "binomial", 2)
 

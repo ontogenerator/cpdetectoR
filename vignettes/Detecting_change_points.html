@@ -12,7 +12,7 @@
 
 <meta name="author" content="Vladislav Nachev" />
 
-<meta name="date" content="2018-07-17" />
+<meta name="date" content="2018-07-19" />
 
 <title>Detecting change points</title>
 
@@ -70,13 +70,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Detecting change points</h1>
 <h4 class="author"><em>Vladislav Nachev</em></h4>
-<h4 class="date"><em>2018-07-17</em></h4>
+<h4 class="date"><em>2018-07-19</em></h4>
 
 
 
-<p>The <code>cpdetectorr</code> package is for finding change points in sequences of responses. Putative change points are first detected, then a statistical test at a predefined significance level (Criterion) is applied to decide if the change point is supported or not. Based on algorithm published by <a href="http://dx.doi.org/10.1073/pnas.0404965101">Gallistel et al. (2004)</a><a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>, translated from Matlab into R.</p>
+<p>The <code>cpdetectoR</code> package is for finding change points in sequences of responses. Putative change points are first detected, then a statistical test at a predefined significance level (Criterion) is applied to decide if the change point is supported or not. Based on algorithm published by <a href="http://dx.doi.org/10.1073/pnas.0404965101">Gallistel et al. (2004)</a><a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>, translated from Matlab into R.</p>
 <p>The input can be either a vector:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(cpdetectorr) <span class="co"># load package first</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(cpdetectoR) <span class="co"># load package first</span>
 <span class="kw">set.seed</span>(<span class="dv">25</span>)
 <span class="kw">cp_wrapper</span>(<span class="kw">c</span>(<span class="kw">rbinom</span>(<span class="dv">50</span>, <span class="dv">1</span>, <span class="fl">0.3</span>), <span class="kw">rbinom</span>(<span class="dv">50</span>, <span class="dv">1</span>, <span class="fl">0.8</span>)), <span class="ot">TRUE</span>, <span class="st">&quot;binomial&quot;</span>, <span class="dv">2</span>)
 <span class="co">#&gt;   Trial CumSs    Slopes</span>

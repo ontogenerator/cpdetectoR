@@ -25,7 +25,7 @@ Based on algorithm published by [Gallistel et al. (2004)](http://dx.doi.org/10.1
 You can use `devtools` to install the package from Github. Install the devtools package first, then execute this code in R(Studio):
 
 ```{r, eval = FALSE}
-devtools::install_github('ontogenerator/cpdetectorr')
+devtools::install_github('ontogenerator/cpdetectoR')
 ```
 
 # Examples
@@ -36,7 +36,7 @@ sequences of responses. The first argument of the function is the input. Thes se
 The input can be either a vector:
 
 ```{r}
-library(cpdetectorr) # load package first
+library(cpdetectoR) # load package first
 set.seed(25)
 cp_wrapper(c(rbinom(50, 1, 0.3), rbinom(50, 1, 0.8)), TRUE, "binomial", 2)
 ```

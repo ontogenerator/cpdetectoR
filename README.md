@@ -9,7 +9,7 @@ Installation
 You can use `devtools` to install the package from Github. Install the devtools package first, then execute this code in R(Studio):
 
 ``` r
-devtools::install_github('ontogenerator/cpdetectorr')
+devtools::install_github('ontogenerator/cpdetectoR')
 ```
 
 Examples
@@ -20,7 +20,7 @@ There is a main wrapper function, called `cp_wrapper`, which can be used to anal
 The input can be either a vector:
 
 ``` r
-library(cpdetectorr) # load package first
+library(cpdetectoR) # load package first
 set.seed(25)
 cp_wrapper(c(rbinom(50, 1, 0.3), rbinom(50, 1, 0.8)), TRUE, "binomial", 2)
 #>   Trial CumSs    Slopes

@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The `cpdetectorr` package is for finding change points in sequences of responses. Putative change
+The `cpdetectoR` package is for finding change points in sequences of responses. Putative change
 points are first detected, then a statistical test at a predefined significance
 level (Criterion) is applied to decide if the change point is supported or not.
 Based on algorithm published by [Gallistel et al. (2004)](http://dx.doi.org/10.1073/pnas.0404965101)^[Gallistel CR, Fairhurst S, Balsam P (2004) The learning curve:
@@ -26,7 +26,7 @@ Based on algorithm published by [Gallistel et al. (2004)](http://dx.doi.org/10.1
 The input can be either a vector:
 
 ```{r}
-library(cpdetectorr) # load package first
+library(cpdetectoR) # load package first
 set.seed(25)
 cp_wrapper(c(rbinom(50, 1, 0.3), rbinom(50, 1, 0.8)), TRUE, "binomial", 2)
 ```

@@ -202,5 +202,3 @@ cp_wrapper <- function(input, isDiscrete, test, Crit)
   CP$Slopes <- ifelse(is.na(CP$Slopes), lag_v(CP$Slopes), CP$Slopes)
   CP
 }
-
-

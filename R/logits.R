@@ -138,8 +138,6 @@ chi2logit <- function(Cum, R)
   p_chisq <- rep(1, length(N)) # initiate pvalue vector
   # mat <- matrix(rep(0, 4), nrow = 2, ncol = 2)
 
-
-
   for (i in 1:length(N)) # loop over the trial count vector
   {
     mat <- cbind(c(Onespre[i], Onespost[i]),
